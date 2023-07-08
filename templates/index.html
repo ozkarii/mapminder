@@ -2,20 +2,22 @@
 <html>
 <head>
     <title>Text to Mindmap</title>
-    <script src="{{url_for('static', filename='d3.js')}}"></script> <!-- include D3.js -->
+    
     
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"> <!-- include CSS -->
 </head>
 <body>
     <div id="container">
-        <div>
-            <textarea id="text-editor"></textarea>
+        <div id="editor">
+            <textarea id="text-editor">data</textarea>
         </div>
     
-        <div id="mindmap">
-            <div id="content"></div>
+        <div id="mindmap">        
+            
         </div>
+        <script src="{{url_for('static', filename='d3.js')}}"></script> <!-- include D3.js -->
+        <script src="{{url_for('static', filename='main.js')}}"></script> <!-- include JS -->
     </div>
-    <script src="{{url_for('static', filename='main.js')}}"></script> <!-- include JS -->
+    
 </body>
 </html>

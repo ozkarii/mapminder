@@ -2,54 +2,76 @@ function formatNode(string) {
     return string.replace(/-/g, "").replace(/\n/g, "");
 }
 
-function readGraph(editorLines) {
-    let graph = new Map();
-    let previousLine = "";
+function readData(text) {
+    let editorLines = text.split('\n')
+    let root = { name: formatNode(editorLines[0]), children: [] };
+    let nodeStack = [root];
 
-    for (let i = 0; i < editorLines.length; i++) {
+    for (let i = 1; i < editorLines.length; i++) {
         let line = editorLines[i];
         if (!line.startsWith("-")) {
             continue;
         }
-        let node = formatNode(line);
-        if (node === "") {
-            continue;
+        let node = { name: formatNode(line), children: [] };
+        let depth = (line.match(/-/g) || []).length;
+
+        while (nodeStack.length > depth) {
+            nodeStack.pop();
         }
-        graph.set(node, []);
-        if (previousLine === "") {
-            // pass
-        } else if ((previousLine.match(/-/g) || []).length < (line.match(/-/g) || []).length) {
-            let previousNode = formatNode(previousLine);
-            graph.get(previousNode).push(node);
-        } else if ((previousLine.match(/-/g) || []).length >= (line.match(/-/g) || []).length) {
-            for (let j = i; j >= 0; j--) {
-                if ((line.match(/-/g) || []).length - (editorLines[j].match(/-/g) || []).length === 1) {
-                    graph.get(formatNode(editorLines[j])).push(node);
-                    break;
-                }
-            }
-        }
-        previousLine = line;
+
+        nodeStack[nodeStack.length - 1].children.push(node);
+        nodeStack.push(node);
     }
 
-    return graph;
+    return root;
 }
 
-function textToArray() {
-    var text = document.getElementById('text-editor').value;
-    var editorLines = text.split('\n');
-    return editorLines;
-}
 
 document.getElementById('text-editor').addEventListener('input', function() {
+    var text = document.getElementById('text-editor').value;
+    var root = readData(text);
 
-    var graph = readGraph(textToArray());
-    console.log(graph);
-    d3.select("#content")
-        .selectAll("div")
-        .data(graph.keys())
-        .enter()
-        .append("div")
-        .text((d, i) => d);
-    
+    // Clear the existing visualization
+    d3.select('#mindmap').selectAll('*').remove();
+
+    const svg = d3.select('#mindmap').append('svg')
+        .attr('width', 2000)
+        .attr('height', 600);
+
+    const g = svg.append('g')
+        .attr('transform', 'translate(40,0)');
+
+    const treeLayout = d3.tree().size([600, 2000]);
+
+    const rootD3 = d3.hierarchy(root);
+    treeLayout(rootD3);
+
+    const links = g.selectAll('.link')
+        .data(rootD3.descendants().slice(1))
+        .enter().append('path')
+        .attr('class', 'link')
+        .attr('d', function(d) {
+            return "M" + d.y + "," + d.x
+                + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+                + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+                + " " + d.parent.y + "," + d.parent.x;
+        });
+
+    const nodes = g.selectAll('.node')
+        .data(rootD3.descendants())
+        .enter().append('g')
+        .attr('class', function(d) { 
+            return "node" + (d.children ? " node--internal" : " node--leaf"); })
+        .attr('transform', function(d){ 
+            return "translate(" + d.y + "," + d.x + ")";});
+
+    nodes.append('circle')
+        .attr('r', 10);
+
+    nodes.append('text')
+        .attr('dy', 3)
+        .attr('x', function(d) { return d.children ? -12 : 12; })
+        .style('text-anchor', function(d) { 
+            return d.children ? 'end' : 'start'; })
+        .text(function(d) { return d.data.name; });
 });
