@@ -3,7 +3,7 @@ function formatNode(string) {
 }
 
 function readGraph(editorLines) {
-    let graph = {};
+    let graph = new Map();
     let previousLine = null;
 
     for (let i = 0; i < editorLines.length; i++) {
@@ -12,16 +12,16 @@ function readGraph(editorLines) {
             continue;
         }
         let node = formatNode(line);
-        graph[node] = [];
+        graph.set(node, []);
         if (previousLine === null) {
             // pass
         } else if ((previousLine.match(/-/g) || []).length < (line.match(/-/g) || []).length) {
             let previousNode = formatNode(previousLine);
-            graph[previousNode].push(node);
+            graph.get(previousNode).push(node);
         } else if ((previousLine.match(/-/g) || []).length >= (line.match(/-/g) || []).length) {
             for (let j = i; j >= 0; j--) {
                 if ((line.match(/-/g) || []).length - (editorLines[j].match(/-/g) || []).length === 1) {
-                    graph[formatNode(editorLines[j])].push(node);
+                    graph.get(formatNode(editorLines[j])).push(node);
                     break;
                 }
             }
@@ -42,7 +42,12 @@ document.getElementById('text-editor').addEventListener('input', function() {
 
     var graph = readGraph(textToArray());
     console.log(graph);
-    // d3.select("#content").selectAll("div").data(graph.keys()).enter().append("div").text((d, i) => d);
+    d3.select("#content")
+        .selectAll("div")
+        .data(graph.keys())
+        .enter()
+        .append("div")
+        .text((d, i) => d);
     
 });
 
