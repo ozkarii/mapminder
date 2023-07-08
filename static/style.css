@@ -1,0 +1,7 @@
+#content div {
+    display: inline;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    padding: 20px;
+}
