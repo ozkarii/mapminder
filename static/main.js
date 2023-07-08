@@ -35,13 +35,13 @@ document.getElementById('text-editor').addEventListener('input', function() {
     d3.select('#mindmap').selectAll('*').remove();
 
     const svg = d3.select('#mindmap').append('svg')
-        .attr('width', 2000)
+        .attr('width', 800)
         .attr('height', 600);
 
     const g = svg.append('g')
         .attr('transform', 'translate(40,0)');
 
-    const treeLayout = d3.tree().size([600, 2000]);
+    const treeLayout = d3.tree().size([400, 400]);
 
     const rootD3 = d3.hierarchy(root);
     treeLayout(rootD3);

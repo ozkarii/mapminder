@@ -17,9 +17,16 @@ svg {
 
 #editor {
     float: left;
+    width: 45vw;
 }
 
 #mindmap {
-    float: left;
-    width: 50%;
+    float: right;
+    width: 45vw;
 }
+
+#text-editor {
+    width: 45vw;
+    height: 800px;
+}
+
