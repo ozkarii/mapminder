@@ -4,16 +4,19 @@ function formatNode(string) {
 
 function readGraph(editorLines) {
     let graph = new Map();
-    let previousLine = null;
+    let previousLine = "";
 
     for (let i = 0; i < editorLines.length; i++) {
         let line = editorLines[i];
-        if (!line.startsWith("-") && previousLine && previousLine.startsWith("-")) {
+        if (!line.startsWith("-")) {
             continue;
         }
         let node = formatNode(line);
+        if (node === "") {
+            continue;
+        }
         graph.set(node, []);
-        if (previousLine === null) {
+        if (previousLine === "") {
             // pass
         } else if ((previousLine.match(/-/g) || []).length < (line.match(/-/g) || []).length) {
             let previousNode = formatNode(previousLine);
@@ -50,14 +53,3 @@ document.getElementById('text-editor').addEventListener('input', function() {
         .text((d, i) => d);
     
 });
-
-// // example of text file lines
-// let fileLines = [
-//     "-cell\n",
-//     "--nucleus\n",
-//     "---chromosome\n",
-//     "----dna\n",
-//     "----histones\n",
-//     "--cytoplasm\n",
-//     "---ribosome\n"
-// ];
