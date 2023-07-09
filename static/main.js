@@ -15,14 +15,12 @@ function bulletsToArray() {
     const bulletElement = editor.querySelector('ul'); 
 
     if (bulletElement === null) {
-        console.log("no ul's");
         return [];
     }
    
     const bullets = bulletElement.querySelectorAll('li'); 
 
     if (bullets.length === 0) {
-        console.log("no li's");
         return [];
     }
 
@@ -76,7 +74,6 @@ var quill = new Quill('#editor', {
 document.getElementById('editor').addEventListener('input', function() {
     
     const bullets = bulletsToArray();
-    console.log(bullets);
     if (bullets.length === 0) {
         d3.select('#mindmap').selectAll('*').remove();
         return;
@@ -137,3 +134,14 @@ document.getElementById('editor').addEventListener('input', function() {
         .text(function(d) { return d.data.name; });
 });
 
+window.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.altKey && e.key === "n") {
+        e.preventDefault();
+        // Get the current cursor position
+        let cursorPosition = quill.getSelection().index;
+        // Insert '**' at the cursor position
+        quill.insertText(cursorPosition, '**');
+        // Move the cursor in between the inserted string
+        quill.setSelection(cursorPosition + 1);
+    }
+});
