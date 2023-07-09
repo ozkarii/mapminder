@@ -8,7 +8,7 @@ svg {
 }
 .node circle {
     fill: #fff;
-    stroke: steelblue;
+    stroke: #7b88ea;
     stroke-width: 1.5px;
 }
 .node text {
@@ -17,15 +17,53 @@ svg {
 
 #editor {
     float: left;
-    width: 45vw;
+    width: 50vw;
 }
 
-#mindmap {
+#mindmap svg {
     float: right;
     width: 45vw;
+    padding-right: 8px;
 }
 
-#text-editor {
-    width: 45vw;
-    height: 800px;
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+}
+
+#navbar li {
+    float: left;
+    display: inline;
+}
+
+#navbar a {
+  display: block;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #7b88ea;
+  font-family: sans-serif;
+  text-decoration: none;
+  color: rgb(234, 234, 234);
+
+}
+
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #7b88ea;
+}
+
+#navbar li a:hover {
+    background-color: #e6b975;
+}
+
+#container {
+    padding-top: 40px;
 }
