@@ -26,9 +26,12 @@ function readData(text) {
     return root;
 }
 
+var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
 
-document.getElementById('text-editor').addEventListener('input', function() {
-    var text = document.getElementById('text-editor').value;
+document.getElementById('editor').addEventListener('input', function() {
+    var text = quill.getText()
     var root = readData(text);
 
     // Clear the existing visualization
