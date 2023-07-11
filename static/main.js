@@ -1,12 +1,3 @@
-function filterText(text) {
-    // Use regular expressions to find the text in between asterisks
-    const match = text.match(/\*(.*?)\*/);
-    // If there's a match, return the text without the asterisks
-    if(match) return match[1];
-    // If there's no match, return an empty string or some default text
-    else return '**';
-}
-
 // saves the bullet points to an array in order [[text, depth]]
 function bulletsToArray() {
     // get editor
@@ -24,15 +15,19 @@ function bulletsToArray() {
         return [];
     }
 
-    var bulletArray = [];
+    let bulletArray = [];
 
     for (const bullet of bullets) {
-        let text = filterText(bullet.textContent);
+        let underlined = bullet.querySelectorAll("u");
+        let nodeText = "";
+        for (const u of underlined) {
+            nodeText += " " + u.textContent; 
+        }
         let depth = parseInt(bullet.className.replace("ql-indent-", ""));
         if (isNaN(depth)) {
             depth = 0;
         }
-        bulletArray.push([text, depth]);
+        bulletArray.push([nodeText, depth]);
     }
 
     return bulletArray;
@@ -66,7 +61,7 @@ function convertToObject(bulletPoints, rootName) {
 }
 
 // init a new instance of quill editor
-var quill = new Quill('#editor', {
+let quill = new Quill('#editor', {
     theme: 'snow'
   });
 
@@ -79,15 +74,18 @@ document.getElementById('editor').addEventListener('input', function() {
         return;
     }
     
-    var bulletStart = document.querySelector("#editor ul");
-    var rootName = bulletStart.previousElementSibling.textContent;
-    if (rootName.startsWith("*")) {
-        var data = convertToObject(bullets, rootName.replace("*", ""));
-    }
-    else {
+    let bulletStart = document.querySelector("#editor ul");
+    try {
+        let rootName = bulletStart.previousElementSibling.textContent;    
+        if (rootName.startsWith("*")) {
+            var data = convertToObject(bullets, rootName.replace("*", ""));
+        }
+        else {
+            var data = convertToObject(bullets, "root");
+        }
+    } catch (error) {
         var data = convertToObject(bullets, "root");
     }
-    
     
     // Clear the existing visualization
     d3.select('#mindmap').selectAll('*').remove();
