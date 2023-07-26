@@ -60,10 +60,23 @@ function convertToObject(bulletPoints, rootName) {
     return result;
 }
 
+
 // init a new instance of quill editor
 let quill = new Quill('#editor', {
+    modules: {
+        syntax: true,
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ header: [1, 2, false] }],
+            [{ 'font': [] }],
+            ['blockquote', 'code-block', 'link', 'image'],
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        ],
+    },
     theme: 'snow'
-  });
+});
+quill.root.setAttribute('spellcheck', false)
 
 
 document.getElementById('editor').addEventListener('input', function() {
@@ -97,7 +110,7 @@ document.getElementById('editor').addEventListener('input', function() {
     const g = svg.append('g')
         .attr('transform', 'translate(40,0)');
 
-    const treeLayout = d3.tree().size([400, 400]);
+    const treeLayout = d3.tree().size([600, 500]);
 
     const rootD3 = d3.hierarchy(data);
     treeLayout(rootD3);
