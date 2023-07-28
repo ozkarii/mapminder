@@ -1,3 +1,19 @@
+$(document).ready(function(){
+    $("#settings-link").click(function(e){
+        e.preventDefault();
+        $("#settings-popup").show();   // Show the popup
+        $(".background").show(); // Show the background div
+    });
+
+    $("#close-btn").click(function(e){
+        e.preventDefault();
+        $("#settings-popup").hide(); // Hide the popup
+        $(".background").hide(); // Hide the background div
+    });
+
+    $("export-btn").click(export_to_pdf());
+});
+
 // saves the bullet points to an array in order [[text, depth]]
 function bulletsToArray() {
     // get editor
@@ -60,11 +76,9 @@ function convertToObject(bulletPoints, rootName) {
     return result;
 }
 
-
 // init a new instance of quill editor
 let quill = new Quill('#editor', {
     modules: {
-        syntax: true,
         toolbar: [
             ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
@@ -77,7 +91,6 @@ let quill = new Quill('#editor', {
     theme: 'snow'
 });
 quill.root.setAttribute('spellcheck', false)
-
 
 document.getElementById('editor').addEventListener('input', function() {
     
