@@ -101,12 +101,7 @@ document.getElementById('editor').addEventListener('input', function() {
     let bulletStart = document.querySelector("#editor ul");
     try {
         let rootName = bulletStart.previousSibling.textContent;
-        if (rootName.startsWith("*")) {
-            var data = convertToObject(bullets, rootName.replace("*", ""));
-        }
-        else {
-            var data = convertToObject(bullets, "root");
-        }
+        var data = convertToObject(bullets, rootName);
     } catch (error) {
         var data = convertToObject(bullets, "root");
     }
