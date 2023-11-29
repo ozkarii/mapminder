@@ -11,7 +11,6 @@ $(document).ready(function(){
         $(".background").hide(); // Hide the background div
     });
 
-    $("export-btn").click(export_to_pdf());
 });
 
 // saves the bullet points to an array in order [[text, depth]]
@@ -92,17 +91,16 @@ let quill = new Quill('#editor', {
 });
 quill.root.setAttribute('spellcheck', false)
 
-document.getElementById('editor').addEventListener('input', function() {
-    
+// render mindmap
+document.getElementById('editor').addEventListener('input', function() {    
     const bullets = bulletsToArray();
     if (bullets.length === 0) {
         d3.select('#mindmap').selectAll('*').remove();
         return;
     }
-    
     let bulletStart = document.querySelector("#editor ul");
     try {
-        let rootName = bulletStart.previousElementSibling.textContent;    
+        let rootName = bulletStart.previousSibling.textContent;
         if (rootName.startsWith("*")) {
             var data = convertToObject(bullets, rootName.replace("*", ""));
         }
@@ -156,16 +154,4 @@ document.getElementById('editor').addEventListener('input', function() {
         .style('text-anchor', function(d) { 
             return d.children ? 'end' : 'start'; })
         .text(function(d) { return d.data.name; });
-});
-
-window.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.altKey && e.key === "n") {
-        e.preventDefault();
-        // Get the current cursor position
-        let cursorPosition = quill.getSelection().index;
-        // Insert '**' at the cursor position
-        quill.insertText(cursorPosition, '**');
-        // Move the cursor in between the inserted string
-        quill.setSelection(cursorPosition + 1);
-    }
 });
