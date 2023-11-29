@@ -1,3 +1,5 @@
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
 $(document).ready(function(){
     $("#settings-link").click(function(e){
         e.preventDefault();
