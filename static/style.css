@@ -94,3 +94,50 @@ svg {
 .darken-background {
     display: block;
 }
+
+.ql-editor {
+    tab-size: 4;
+    -moz-tab-size: 4;
+    -o-tab-size:  4; 
+}
+
+/*reduce bulletpoint padding*/
+.ql-editor ol, .ql-editor ul {
+    padding-left: 1.0em;
+}
+
+.ql-editor ol li:not(.ql-direction-rtl), .ql-editor ul li:not(.ql-direction-rtl) {
+    padding-left: 0.75em;
+}
+
+.ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
+    padding-left: 2.25em;
+}
+
+.ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
+    padding-left: 3.75em;
+}
+
+.ql-editor li.ql-indent-3:not(.ql-direction-rtl) {
+    padding-left: 5.25em;
+}
+
+.ql-editor li.ql-indent-4:not(.ql-direction-rtl) {
+    padding-left: 6.75em;
+}
+
+.ql-editor li.ql-indent-5:not(.ql-direction-rtl) {
+    padding-left: 8.25em;
+}
+
+.ql-editor li.ql-indent-6:not(.ql-direction-rtl) {
+    padding-left: 9.75em;
+}
+
+.ql-editor li.ql-indent-7:not(.ql-direction-rtl) {
+    padding-left: 11.25em;
+}
+
+.ql-editor li.ql-indent-8:not(.ql-direction-rtl) {
+    padding-left: 12.75em;
+}
